@@ -1,0 +1,105 @@
+<ion-header>
+<ion-navbar color="primary">
+    <button ion-button menuToggle>
+    <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+    <strong>QR Code</strong> 
+    </ion-title>
+</ion-navbar>
+</ion-header>
+
+<ion-content>
+<div *ngIf="mode == 0">
+  <ion-item text-center *ngIf="lstCodeQR?.length == 0">
+    <p>Aucun Qr code</p>
+  </ion-item>
+  <ion-list *ngIf="lstCodeQR?.length > 0">
+    <ion-item-divider *ngFor="let code of lstCodeQR">
+        <span ion-text color="primary" tappable (click)="selectCode(code)">{{code.Name}}</span>
+        <ion-icon name="trash" tappable item-end (click)="deleteCode(code)"></ion-icon>
+    </ion-item-divider>
+  </ion-list>
+  <ion-item text-center>
+      <button ion-button round outline color="dark" tappable type="button" (click)="addNewCode()">+ Nouveau QR code</button>
+  </ion-item>
+</div>
+
+<div *ngIf="mode == 1">
+    <form [formGroup]="codeForm" (ngSubmit)="updateCode(codeForm.value)">
+        <ion-item [ngClass]="{'error-border':!codeForm.controls.Name.valid && codeForm.controls.Name.touched}">
+          <ion-label floating>
+            Nom 
+          </ion-label>
+          <ion-input type="text" formControlName="Name"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="codeForm.controls.Name.hasError('required') && codeForm.controls.Name.touched">
+          <p class="text-error">Désolé, le nom est requis !</p>
+        </ion-item>
+  
+        <ion-item [ngClass]="{'error-border':!codeForm.controls.Description.valid && codeForm.controls.Description.touched}">
+          <ion-label floating>
+            Description 
+          </ion-label>
+          <ion-input type="text" formControlName="Description"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="codeForm.controls.Description.hasError('required') && codeForm.controls.Description.touched">
+          <p class="text-error">Désolé, la description est requise !</p>
+        </ion-item>
+  
+        <ion-item [ngClass]="{'error-border':!codeForm.controls.Data.valid && codeForm.controls.Data.touched}">
+          <ion-label floating>
+            Données 
+          </ion-label>
+          <ion-input type="text" formControlName="Data"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="codeForm.controls.Data.hasError('required') && codeForm.controls.Data.touched">
+          <p class="text-error">Désolé, les données sont requises !</p>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>
+            Largeur 
+          </ion-label>
+          <ion-input type="number" formControlName="Width"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>
+            Longueur 
+          </ion-label>
+          <ion-input type="number" formControlName="Height"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="codeSelected.Id != undefined">
+          <button ion-button round tappable type="button" (click)="showQrCode()">QR Code</button>
+        </ion-item>
+
+        <div>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <button ion-button block color="dark" tappable type="submit" [disabled]="!codeForm.valid">
+                  Valider
+                </button>
+              </ion-col>
+              <ion-col>
+                <button ion-button block color="dark" tappable type="button" (click)="mode = 0">
+                  Retour
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="mode == 2">
+  <ion-item text-center>
+    <img [src]="displayImage" width="100" height="100" />
+  </ion-item>
+  <ion-item>
+    <button ion-button block color="dark" tappable type="button" (click)="selectCode(codeSelected)">Retour</button>
+  </ion-item>
+</div>
+</ion-content>

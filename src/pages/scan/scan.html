@@ -1,0 +1,24 @@
+<ion-header>
+<ion-navbar color="primary">
+    <button ion-button menuToggle>
+    <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+    <strong>Scan</strong> 
+    </ion-title>
+</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <button ion-button full icon-left (click)="scanCode()" color="dark"><ion-icon name="qr-scanner"></ion-icon>Scan Code</button>
+  
+  <ion-card>
+    <ngx-qrcode [qrc-value]="valueCode"></ngx-qrcode>
+    <ion-card-content>
+      <strong>Message :</strong>
+      <p *ngIf="valueCode.length > 0">{{ valueCode }}</p>
+      <p class="text-error" *ngIf="errorCode.length > 0">{{ errorCode }}</p>
+    </ion-card-content>
+  </ion-card>
+  
+</ion-content>

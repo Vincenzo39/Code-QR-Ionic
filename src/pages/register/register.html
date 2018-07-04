@@ -1,0 +1,100 @@
+<!-- -->
+<ion-content padding class="animated fadeIn login auth-page">
+  <div class="login-content">
+
+    <!-- Logo -->
+    <div padding-horizontal text-center class="animated fadeInDown">
+      <div class="logo" style="margin-top: 150px;"></div>
+      <h2 ion-text class="text-primary">
+        <strong>QR</strong> Code
+      </h2>
+    </div>
+
+    <!-- Login form -->
+    <form class="list-form" [formGroup]="registerForm" (ngSubmit)="register(registerForm.value)">
+      <ion-item [ngClass]="{'error-border':!registerForm.controls.FirstName.valid && registerForm.controls.FirstName.touched}">
+        <ion-label floating>
+          <ion-icon name="person" item-start class="text-primary"></ion-icon>
+          Prénom
+        </ion-label>
+        <ion-input type="text" formControlName="FirstName"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="registerForm.controls.FirstName.hasError('required') && registerForm.controls.FirstName.touched">
+        <p class="text-error">Désolé, le prénom est requis !</p>
+      </ion-item>
+
+
+      <ion-item [ngClass]="{'error-border':!registerForm.controls.LastName.valid && registerForm.controls.LastName.touched}">
+        <ion-label floating>
+          <ion-icon name="person" item-start class="text-primary"></ion-icon>
+          Nom
+        </ion-label>
+        <ion-input type="text" formControlName="LastName"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="registerForm.controls.LastName.hasError('required') && registerForm.controls.LastName.touched">
+        <p class="text-error">Désolé, le nom est requis !</p>
+      </ion-item>
+
+
+      <ion-item [ngClass]="{'error-border':!registerForm.controls.Email.valid && registerForm.controls.Email.touched}">
+        <ion-label floating>
+          <ion-icon name="mail" item-start class="text-primary"></ion-icon>
+          Email
+        </ion-label>
+        <ion-input type="email" formControlName="Email"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="registerForm.controls.Email.hasError('required') && registerForm.controls.Email.touched">
+            <p class="text-error">Désolé, l'email est requis !</p>
+        </ion-item>
+        <ion-item *ngIf="registerForm.controls.Email.hasError('pattern') && registerForm.controls.Email.touched">
+            <p class="text-error">Désolé, le format de l'email n'est pas correct !</p>
+        </ion-item> 
+
+    
+      <ion-item [ngClass]="{'error-border':!registerForm.controls.Password.valid && registerForm.controls.Password.touched}">
+        <ion-label floating>
+          <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+          Mot de passe
+        </ion-label>
+        <ion-input type="password" formControlName="Password"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="registerForm.controls.Password.hasError('required') && registerForm.controls.Password.touched">
+          <p class="text-error">Désolé, le mot de passe est requis !</p>
+        </ion-item>
+        <ion-item *ngIf="registerForm.controls.Password.hasError('minlength') && registerForm.controls.Password.touched">
+            <p class="text-error">Désolé, un minimum de 8 caractères est requi !</p>
+        </ion-item> 
+
+
+      <ion-item [ngClass]="{'error-border':!registerForm.controls.ConfirmPassword.valid && registerForm.controls.ConfirmPassword.hasError('equalTo') && registerForm.controls.ConfirmPassword.touched}">
+        <ion-label floating>
+          <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+          Confirmation mot de passe
+        </ion-label>
+        <ion-input type="password" formControlName="ConfirmPassword"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="registerForm.controls.ConfirmPassword.hasError('required') && registerForm.controls.ConfirmPassword.touched">
+        <p class="text-error">Désolé, une confirmation de mot de passe est requise !</p>
+      </ion-item>
+      <ion-item *ngIf="(registerForm.controls.ConfirmPassword.hasError('required') && registerForm.controls.ConfirmPassword.touched) || (registerForm.controls.ConfirmPassword.hasError('equalTo') && registerForm.controls.ConfirmPassword.touched)">
+        <p class="text-error">Désolé, les mots de passes ne sont pas identiques !</p>
+      </ion-item>
+      <div margin-top>
+        <button ion-button block color="dark" tappable [disabled]="!registerForm.valid" type="submit">
+          Valider
+        </button>
+        <ion-item *ngIf="error.length > 0">
+          <p text-center class="text-error">{{error}}</p>
+        </ion-item>
+      </div>
+    </form>
+
+    
+
+    <!-- Other links -->
+    <div text-center margin-top>
+      <span ion-text color="primary" tappable (click)="login()">Déjà inscrit ? <strong>Connexion</strong></span>
+    </div>
+
+  </div>
+</ion-content>

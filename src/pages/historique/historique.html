@@ -1,0 +1,59 @@
+<ion-header>
+<ion-navbar color="primary">
+    <button ion-button menuToggle>
+    <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+    <strong>Historique</strong> 
+    </ion-title>
+</ion-navbar>
+</ion-header>
+
+<ion-content>
+    
+<div *ngIf="mode == 0">
+    <ion-item text-center>
+        <ion-title>Mes Qr Code</ion-title>
+    </ion-item>
+    <ion-item text-center *ngIf="lstCodeQR?.length == 0">
+      <p>Aucun Qr Code</p>
+    </ion-item>
+    <ion-list *ngIf="lstCodeQR?.length > 0">
+      <ion-item-divider *ngFor="let code of lstCodeQR">
+          <span ion-text color="primary" tappable (click)="selectCode(code)">{{code.Name}}</span>
+      </ion-item-divider>
+    </ion-list>
+</div>
+
+<div *ngIf="mode == 1">
+    <ion-item text-center>
+        <ion-title>Historique lecture : <strong>{{codeSelected.Name}}</strong></ion-title>
+    </ion-item>
+
+    <ion-item *ngFor="let scan of lstScanQR">
+        <table align="center">
+            <tr>
+                <td><strong>Utilisateur : &nbsp;</strong></td>
+                <td>{{scan.User.FirstName}} {{scan.User.LastName}}</td>
+            </tr>
+            <tr>
+                <td><strong>Date : &nbsp;</strong></td>
+                <td>{{scan.Date | date: 'dd/MM/yyyy H:mm:ss' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Qr Code : &nbsp;</strong></td>
+                <td>{{scan.CodeQR.Name}}</td>
+            </tr>
+            <tr>
+                <td><strong>Données : &nbsp;</strong></td>
+                <td>{{scan.Data}}</td>
+            </tr>
+        </table>
+    </ion-item>
+    <ion-item>
+        <button ion-button block color="dark" tappable type="button" (click)="mode = 0">
+            Retour
+        </button>
+    </ion-item>
+</div>
+</ion-content>

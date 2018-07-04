@@ -1,0 +1,58 @@
+<!-- -->
+<ion-content padding class="animated fadeIn login auth-page">
+  <div class="login-content">
+
+    <!-- Logo -->
+    <div padding-horizontal text-center class="animated fadeInDown">
+      <div class="logo"></div>
+      <h2 ion-text class="text-primary">
+        <strong>QR</strong> Code
+      </h2>
+    </div>
+
+    <!-- Login form -->
+    <form class="list-form" [formGroup]="authForm" (ngSubmit)="login(authForm.value)">
+
+      <ion-item [ngClass]="{'error-border':!authForm.controls.username.valid && authForm.controls.username.touched}">
+        <ion-label floating>
+          <ion-icon name="mail" item-start class="text-primary"></ion-icon>
+          Email
+        </ion-label>
+        <ion-input type="email" formControlName="username"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="authForm.controls.username.hasError('required') && authForm.controls.username.touched">
+          <p class="text-error">Désolé, l'email est requis !</p>
+      </ion-item>
+      <ion-item *ngIf="authForm.controls.username.hasError('pattern') && authForm.controls.username.touched">
+          <p class="text-error">Désolé, le format de l'email n'est pas correct !</p>
+      </ion-item> 
+
+      <ion-item [ngClass]="{'error-border':!authForm.controls.password.valid && authForm.controls.password.touched}">
+        <ion-label floating>
+          <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+          Mot de passe
+        </ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="authForm.controls.password.hasError('required') && authForm.controls.password.touched">
+          <p class="text-error">Désolé, le mot de passe est requis !</p>
+      </ion-item>
+      
+      <div>
+        <button ion-button icon-start block color="dark" tappable [disabled]="!authForm.valid" type="submit">
+          <ion-icon name="log-in"></ion-icon>
+          Valider
+        </button>
+        <ion-item *ngIf="error.length > 0">
+          <p text-center class="text-error">{{error}}</p>
+        </ion-item>
+      </div>
+    </form>
+
+    <!-- Other links -->
+    <div text-center margin-top>
+      <span ion-text color="secondary" tappable (click)="register()">Nouveau ? <strong>S'inscrire</strong></span>
+    </div>
+
+  </div>
+</ion-content>

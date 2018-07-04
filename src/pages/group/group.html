@@ -1,0 +1,115 @@
+<ion-header>
+<ion-navbar color="primary">
+    <button ion-button menuToggle>
+    <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+    <strong>Groupe</strong> 
+    </ion-title>
+</ion-navbar>
+</ion-header>
+
+<ion-content>
+<div *ngIf="mode == 0">
+  <ion-item>
+    <ion-grid>
+      <ion-row text-center>
+        <ion-col text-center>
+          <button ion-button block outline tappable type="button" (click)="showGroups(1)">Mes groupes</button>
+        </ion-col>
+      </ion-row>
+      <ion-row text-center>
+        <ion-col text-center>
+          <button ion-button block outline tappable type="button" (click)="showGroups(2)">Autres</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+</ion-item>
+</div>
+
+<div *ngIf="mode == 1 || mode == 2">
+  <ion-item text-center>
+      <ion-title *ngIf="mode == 1">Mes groupes</ion-title>
+      <ion-title *ngIf="mode == 2">Autres groupes</ion-title>
+  </ion-item>
+  <ion-item text-center *ngIf="lstGroups?.length == 0">
+    <p>Aucun groupe</p>
+  </ion-item>
+  <ion-list *ngIf="lstGroups?.length > 0">
+    <ion-item-divider *ngFor="let group of lstGroups">
+        <span ion-text color="primary" tappable (click)="selectGroup(group)">{{group.Name}}</span>
+        <ion-icon *ngIf="mode == 1" name="trash" tappable item-end (click)="deleteGroup(group)"></ion-icon>
+    </ion-item-divider>
+  </ion-list>
+
+  <ion-item text-center>
+      <button ion-button  color="dark" tappable type="button" (click)="showGroups(0)">Retour</button>
+      <button *ngIf="mode == 1" ion-button round outline color="dark" tappable type="button" (click)="addNewGroup(0)">+ Nouveau groupe</button>
+  </ion-item>
+</div>
+
+<div *ngIf="mode > 2">
+    <form [formGroup]="groupForm" (ngSubmit)="updateGroup(groupForm.value)">
+        <ion-item [ngClass]="{'error-border':!groupForm.controls.Name.valid && groupForm.controls.Name.touched}">
+          <ion-label floating>
+            Nom 
+          </ion-label>
+          <ion-input type="text" formControlName="Name" [disabled]="!isUserOwner"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="groupForm.controls.Name.hasError('required') && groupForm.controls.Name.touched">
+          <p class="text-error">Désolé, le nom est requis !</p>
+        </ion-item>
+  
+        <ion-item [ngClass]="{'error-border':!groupForm.controls.Description.valid && groupForm.controls.Description.touched}">
+          <ion-label floating>
+            Description 
+          </ion-label>
+          <ion-input type="text" formControlName="Description" [disabled]="!isUserOwner"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="groupForm.controls.Description.hasError('required') && groupForm.controls.Description.touched">
+          <p class="text-error">Désolé, la description est requise !</p>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label floating>
+            Propriétaire 
+          </ion-label>
+          <ion-input type="text" [disabled]="true" formControlName="Proprietaire"></ion-input>
+        </ion-item>
+  
+        <ion-item *ngIf="groupSelected.Id != undefined">
+          <button ion-button round tappable type="button" (click)="showUsers()">Membres</button>
+          <button ion-button round tappable type="button" (click)="showCodeQR()" *ngIf="isUserOwner">QR Code</button>
+        </ion-item>
+        
+        <ion-item text-center>
+          <img [src]="displayImage" width="100" height="100" *ngIf="hideShowCodeQR"/>
+          <p *ngIf="!hideShowCodeQR">Aucun code Qr n'est défini</p>
+        </ion-item>
+
+        <ion-item *ngIf="messageError.length > 0">
+          <p text-center class="text-error">{{messageError}}</p>
+        </ion-item> 
+        <ion-item *ngIf="messageSuccess.length > 0">
+          <p text-center class="text-success">{{messageSuccess}}</p>
+        </ion-item>
+  
+        <div margin-top>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <button ion-button block color="dark" tappable type="submit" [disabled]="!groupForm.valid || !isUserOwner">
+                  Valider
+                </button>
+              </ion-col>
+              <ion-col>
+                <button ion-button block color="dark" tappable type="button" (click)="showGroups(0)">
+                  Retour
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+    </form>
+</div>
+</ion-content>
