@@ -50,12 +50,14 @@ export class ScanPage {
               {
                 this.socket.emit('scanCode', {idUserCreator: idUserCreator, message: this.currentUser.FirstName + " " + this.currentUser.LastName + " a lu : " + message}); 
               }
-
+              
+              this.socket.emit('allumeLed', {isAuthorize : '1'});
               this.valueCode = message;
               this.scanProvider.Create_ScanQR(this.currentUser.Id, idCodeQr, new Date(), message);
             }
             else
             {
+              this.socket.emit('allumeLed', {isAuthorize : '2'});
               this.errorCode = "Vous n'avez pas le droit de lecture";
             }
           })
